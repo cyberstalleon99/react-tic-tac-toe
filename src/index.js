@@ -45,34 +45,58 @@ class Board extends React.Component {
   }
 }
 
+class MovesList extends React.Component {
+
+  render() {
+    const history = this.props.history;
+    const moves = history.map((step, move) => {
+      const desc =  move 
+      ? `Go to move # ${move} (${history[move].location})` 
+      : 'Go to game start';
+
+      return (
+        <li key={move}>
+          <button onClick={() => this.props.onClick(move)}>
+            <span style={{fontWeight: history.length-1 === move ? 'bold' : 'normal'}}>{desc}</span>
+          </button>
+        </li>
+      )
+    });
+
+    return moves
+  }
+
+}
+
 class Game extends React.Component {
-  // history = [
-  //   // Before first move
-  //   {
-  //     squares: [
-  //       null, null, null,
-  //       null, null, null,
-  //       null, null, null,
-  //     ]
-  //   },
-  //   // After first move
-  //   {
-  //     squares: [
-  //       null, null, null,
-  //       null, 'X', null,
-  //       null, null, null,
-  //     ]
-  //   },
-  //   // After second move
-  //   {
-  //     squares: [
-  //       null, null, null,
-  //       null, 'X', null,
-  //       null, null, 'O',
-  //     ]
-  //   },
-  //   // ...
-  // ]
+  /*
+  history = [
+    // Before first move
+    {
+      squares: [
+        null, null, null,
+        null, null, null,
+        null, null, null,
+      ]
+    },
+    // After first move
+    {
+      squares: [
+        null, null, null,
+        null, 'X', null,
+        null, null, null,
+      ]
+    },
+    // After second move
+    {
+      squares: [
+        null, null, null,
+        null, 'X', null,
+        null, null, 'O',
+      ]
+    },
+    // ...
+  ]*/
 
   constructor(props) {
     super(props)
@@ -128,17 +152,6 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares);
     let status;
 
-    const moves = history.map((step, move) => {
-      const desc = move 
-        ? `Go to move # ${move} @ (${history[move].location})` 
-        : 'Go to game start';
-      return (
-        <li key={move} className={step}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      )
-    });
-
     if (winner) {
       status = 'Winner: ' + winner;
     } else {
@@ -155,7 +168,12 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ol>
+            <MovesList 
+              history={history} 
+              onClick={(step) => this.jumpTo(step)}
+              />
+          </ol>
         </div>
       </div>
     );
