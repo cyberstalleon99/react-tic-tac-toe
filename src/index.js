@@ -30,9 +30,9 @@ class Board extends React.Component {
       let row_list = [];
       let counter = 0;
 
-      for (let row=0; row < size; row++) {
+      Array.from({length: size}, (element, index) => {
         row_list.push(
-          <div key={row} className='board-row'>
+          <div key={index} className='board-row'>
             {
               Array.from({length: size}, (element, index) => {
                 const square = this.renderSquare(counter);
@@ -42,7 +42,9 @@ class Board extends React.Component {
             }
           </div>
         )
-      }
+      })
+        
+
       return (
         <div>
           {row_list}
