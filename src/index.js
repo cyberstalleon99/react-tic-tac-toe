@@ -63,7 +63,7 @@ class MovesList extends React.Component {
       )
     });
 
-    return moves
+    return this.props.isAsc ? moves : moves.reverse()
   }
 
 }
@@ -107,7 +107,9 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      isAsc: true,
     }
+    this.handleSort = this.handleSort.bind(this)
   }
 
   handleClick(i) {
@@ -133,10 +135,16 @@ class Game extends React.Component {
       history: history.concat([{
         squares: squares,
         location: locations[i],
-      }]),
+      }]), 
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
+  }
+
+  handleSort() {
+    this.setState({
+      isAsc: !this.state.isAsc,
+    })
   }
 
   jumpTo(step) {
@@ -168,8 +176,10 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <div><button onClick={this.handleSort}>{this.state.isAsc ? 'Ascending' : 'Descending'}</button></div>
           <ol>
             <MovesList 
+              isAsc={this.state.isAsc}
               history={history} 
               onClick={(step) => this.jumpTo(step)}
               />
