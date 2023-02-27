@@ -173,9 +173,11 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     let status;
-
+    
     if (winner) {
       status = 'Winner: ' + winner.player;
+    } else if (!current.squares.includes(null)) {
+      status = 'Draw';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
     }
